@@ -27,6 +27,7 @@ links = soup.findAll('a', title=True)
 
 for link in links:
 	url = 'http://www.staffordshire.gov.uk' + link['href']
+	print url
 	if 'expenditureexceeding500' in url:
 		html2 = urllib2.urlopen(url)
 		soup2 = BeautifulSoup(html)
