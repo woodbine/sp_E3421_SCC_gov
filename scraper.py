@@ -27,17 +27,24 @@ links = soup.findAll('a', title=True)
 
 for link in links:
 	url = 'http://www.staffordshire.gov.uk' + link['href']
-	aTitle = link['title'] #  gets the title from the anchor tag
-	if 'csv' in aTitle:
-		title = link.encode_contents(formatter='html').replace('&nbsp;',' ') #  gets rid of erroneous &nbsp; chars
-		# create the right strings for the new filename
-		csvYr = title.split(' ')[1]
-		csvMth = title.split(' ')[0][:3]
-		csvMth = csvMth.upper()
-		csvMth = convert_mth_strings(csvMth);
-		filename = entity_id + "_" + csvYr + "_" + csvMth + ".csv"
-		todays_date = str(datetime.now())
-		scraperwiki.sqlite.save(unique_keys=['l'], data={"l": url, "f": filename, "d": todays_date })
-		print filename
+	if 'expenditureexceeding500' in url:
+		html2 = urllib2.urlopen(url)
+		soup2 = BeautifulSoup(html)
+		
+		sublinks = soup.findAll('a', title=True)
+		
+		for sublink in sublinks:
+			subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
+			if '.xlsx' in subUrl:
+				title = link.encode_contents(formatter='html').replace('&nbsp;',' ') #  gets rid of erroneous &nbsp; chars
+				# create the right strings for the new filename
+				csvYr = title.split(' ')[1]
+				csvMth = title.split(' ')[0][:3]
+				csvMth = csvMth.upper()
+				csvMth = convert_mth_strings(csvMth);
+				filename = entity_id + "_" + csvYr + "_" + csvMth + ".csv"
+				todays_date = str(datetime.now())
+				scraperwiki.sqlite.save(unique_keys=['l'], data={"l": url, "f": filename, "d": todays_date })
+				print filename
 
 
