@@ -30,6 +30,7 @@ for link in links:
 	if 'expenditureexceeding500' in url:
 		html2 = urllib2.urlopen(url)
 		soup2 = BeautifulSoup(html)
+		print soup2
 		
 		sublinks = soup2.findAll('a', title=True)
 		print sublinks
