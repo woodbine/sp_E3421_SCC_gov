@@ -31,7 +31,7 @@ for link in links:
 		html2 = urllib2.urlopen(url)
 		soup2 = BeautifulSoup(html)
 		
-		sublinks = soup.findAll('a', title=True)
+		sublinks = soup2.findAll('a', title=True)
 		
 		for sublink in sublinks:
 			subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
