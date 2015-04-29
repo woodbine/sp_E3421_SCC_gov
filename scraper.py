@@ -27,7 +27,6 @@ links = soup.findAll('a', title=True)
 
 for link in links:
 	url = 'http://www.staffordshire.gov.uk' + link['href']
-	print url
 	if 'expenditureexceeding500' in url:
 		html2 = urllib2.urlopen(url)
 		soup2 = BeautifulSoup(html)
@@ -36,6 +35,7 @@ for link in links:
 		
 		for sublink in sublinks:
 			subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
+			print subUrl
 			if '.xlsx' in subUrl:
 				title = sublink.encode_contents(formatter='html').replace('&nbsp;',' ') #  gets rid of erroneous &nbsp; chars
 				print title
