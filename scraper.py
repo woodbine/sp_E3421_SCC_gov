@@ -31,9 +31,9 @@ for link in links:
 		print url
 		html2 = urllib2.urlopen(url)
 		soup2 = BeautifulSoup(html)
+		print soup2
 		
 		sublinks = soup2.findAll('a', title=True)
-		print sublinks
 		
 		for sublink in sublinks:
 			subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
