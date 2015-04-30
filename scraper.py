@@ -35,10 +35,8 @@ for link in links:
 		
 		for sublink in sublinks:
 			subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
-			print subUrl
 			if '.xlsx' in subUrl:
 				title = sublink.encode_contents(formatter='html').replace('&nbsp;',' ') #  gets rid of erroneous &nbsp; chars
-				print title
 				# create the right strings for the new filename
 				csvYr = title.split(' ')[1]
 				csvMth = title.split(' ')[0][:3]
