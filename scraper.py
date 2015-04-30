@@ -30,10 +30,9 @@ for link in links:
 	pageUrl = 'http://www.staffordshire.gov.uk' + link['href']
 	if 'expenditureexceeding500' in pageUrl:
 		html2 = urllib2.urlopen(pageUrl)
+		print pageUrl
 		soup2 = BeautifulSoup(html2)
-		
 		sublinks = soup2.findAll('a', title=True)
-		
 		for sublink in sublinks:
 			print sublink
 			
