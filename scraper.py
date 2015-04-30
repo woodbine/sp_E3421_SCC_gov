@@ -25,12 +25,12 @@ soup = BeautifulSoup(html)
 # find all entries with the required class
 block = soup.find('ul',{'class':'sys_simpleListMenu'})
 links = block.findAll('a', title=True)
+print links
 
 for link in links:
 	pageUrl = 'http://www.staffordshire.gov.uk' + link['href']
 	if 'expenditureexceeding500' in pageUrl:
 		html2 = urllib2.urlopen(pageUrl)
-		print pageUrl
 		soup2 = BeautifulSoup(html2)
 		sublinks = soup2.findAll('a', title=True)
 		for sublink in sublinks:
