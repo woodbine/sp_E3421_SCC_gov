@@ -35,6 +35,8 @@ for link in links:
 		sublinks = soup2.findAll('a', title=True)
 		
 		for sublink in sublinks:
+			print sublink
+			
 			subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
 			if '.xlsx' in subUrl:
 				title = sublink.encode_contents(formatter='html').replace('&nbsp;',' ') #  gets rid of erroneous &nbsp; chars
