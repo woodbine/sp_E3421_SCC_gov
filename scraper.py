@@ -25,7 +25,6 @@ soup = BeautifulSoup(html)
 # find all entries with the required class
 block = soup.find('div',{'id':'fullcontent'})
 links = block.findAll('a', title=True)
-print links
 
 for link in links:
 	pageUrl = 'http://www.staffordshire.gov.uk' + link['href']
