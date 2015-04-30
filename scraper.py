@@ -23,7 +23,8 @@ html = urllib2.urlopen(url)
 soup = BeautifulSoup(html)
 
 # find all entries with the required class
-links = soup.findAll('a', title=True)
+block = soup.find('ul',{'class':'sys_simpleListMenu'})
+links = block.findAll('a', title=True)
 
 for link in links:
 	pageUrl = 'http://www.staffordshire.gov.uk' + link['href']
