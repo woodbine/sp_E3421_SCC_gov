@@ -45,7 +45,7 @@ for link in links:
 				csvMth = convert_mth_strings(csvMth);
 				filename = entity_id + "_" + csvYr + "_" + csvMth + ".csv"
 				todays_date = str(datetime.now())
-				scraperwiki.sqlite.save(unique_keys=['l'], data={"l": url, "f": filename, "d": todays_date })
+				scraperwiki.sqlite.save(unique_keys=['l'], data={"l": subUrl, "f": filename, "d": todays_date })
 				print filename
 
 
