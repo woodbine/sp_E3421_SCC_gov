@@ -23,7 +23,7 @@ html = urllib2.urlopen(url)
 soup = BeautifulSoup(html)
 
 # find all entries with the required class
-block = soup.find('ul',{'class':'sys_simpleListMenu'})
+block = soup.find('div',{'id':'fullcontent'})
 links = block.findAll('a', title=True)
 print links
 
