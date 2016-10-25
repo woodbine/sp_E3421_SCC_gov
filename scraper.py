@@ -104,13 +104,12 @@ for link in links:
     if 'expenditureexceeding500' in pageUrl:
         html2 = urllib2.urlopen(pageUrl)
         soup2 = BeautifulSoup(html2, 'lxml')
-
         subblock = soup2.find('div',{'id':'fullcontent'})
         sublinks = subblock.findAll('a', title=True)
         for sublink in sublinks:
             subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
-            if '.xlsx' in subUrl:
-                title = sublink.encode_contents(formatter='html').replace('&nbsp;',' ')
+            if '.csv' in subUrl:
+                title = sublink.encode_contents(formatter='html').replace('&nbsp;',' ').replace('CSV','').strip()
                 csvYr = title.split(' ')[1]
                 csvMth = title.split(' ')[0][:3]
                 csvMth = convert_mth_strings(csvMth.upper())
