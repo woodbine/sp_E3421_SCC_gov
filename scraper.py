@@ -100,20 +100,30 @@ block = soup.find('div',{'id':'fullcontent'})
 links = block.findAll('a', title=True)
 
 for link in links:
-    pageUrl = 'http://www.staffordshire.gov.uk' + link['href']
-    if 'expenditureexceeding500' in pageUrl:
+    if 'Expenditure' in link.text:
+        pageUrl = 'http://www.staffordshire.gov.uk' + link['href']
         html2 = urllib2.urlopen(pageUrl)
         soup2 = BeautifulSoup(html2, 'lxml')
         subblock = soup2.find('div',{'id':'fullcontent'})
-        sublinks = subblock.findAll('a', title=True)
+        sublinks = subblock.findAll('a', href=True)
         for sublink in sublinks:
-            subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
-            if '.csv' in subUrl:
+            if '.csv' in sublink['href'] and 'Expenditure' in sublink['href']:
+                subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
+                title = sublink['title'].replace('_v2', '').replace('_v3', '')
+                csvYr = title.split('_')[-1]
+                csvMth = title.split('_')[-2]
+                csvMth = convert_mth_strings(csvMth.upper())
+                data.append([csvYr, csvMth, subUrl])
+            if '.xlsx' in sublink['href'] and '2014' in sublink['href']:
+                subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
                 title = sublink.encode_contents(formatter='html').replace('&nbsp;',' ').replace('CSV','').strip()
                 csvYr = title.split(' ')[1]
                 csvMth = title.split(' ')[0][:3]
                 csvMth = convert_mth_strings(csvMth.upper())
                 data.append([csvYr, csvMth, subUrl])
+
+
+
 
 #### STORE DATA 1.0
 
