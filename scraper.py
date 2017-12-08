@@ -96,33 +96,29 @@ soup = BeautifulSoup(html, 'lxml')
 
 #### SCRAPE DATA
 
-block = soup.find('div',{'id':'fullcontent'})
-links = block.findAll('a', title=True)
-
+links = soup.find_all('a', 'sys_15')
 for link in links:
-    if 'Expenditure' in link.text:
-        pageUrl = 'http://www.staffordshire.gov.uk' + link['href']
-        html2 = urllib2.urlopen(pageUrl)
-        soup2 = BeautifulSoup(html2, 'lxml')
-        subblock = soup2.find('div',{'id':'fullcontent'})
-        sublinks = subblock.findAll('a', href=True)
-        for sublink in sublinks:
-            if '.csv' in sublink['href'] and 'Expenditure' in sublink['href']:
-                subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
-                title = sublink['title'].replace('_v2', '').replace('_v3', '')
-                csvYr = title.split('_')[-1]
-                csvMth = title.split('_')[-2]
-                csvMth = convert_mth_strings(csvMth.upper())
-                data.append([csvYr, csvMth, subUrl])
-            if '.xlsx' in sublink['href'] and '2014' in sublink['href']:
-                subUrl = 'http://www.staffordshire.gov.uk' + sublink['href']
-                title = sublink.encode_contents(formatter='html').replace('&nbsp;',' ').replace('CSV','').strip()
-                csvYr = title.split(' ')[1]
-                csvMth = title.split(' ')[0][:3]
-                csvMth = convert_mth_strings(csvMth.upper())
-                data.append([csvYr, csvMth, subUrl])
-
-
+    url = 'https://www.staffordshire.gov.uk'+link['href']
+    csvYr = link.text.split('-')[-1].strip().split()[-1]
+    csvMth = link.text.split('-')[-1].strip()[:3]
+    csvMth = convert_mth_strings(csvMth.upper())
+    data.append([csvYr, csvMth, url])
+archive_url = "https://www.staffordshire.gov.uk/yourcouncil/transparency/expenditure/Archive.aspx"
+html2 = urllib2.urlopen(archive_url)
+soup2 = BeautifulSoup(html2, 'lxml')
+headers = soup2.find_all('h2')
+for header in headers:
+    if '2014' in header.text:
+        archive_links_headers_2014 = header.find_next('ul').find_all('a', 'sys_18')
+    elif '2013' in header.text:
+        archive_links_headers_2013 = header.find_next('ul').find_all('a', 'sys_18')[:3]
+archive_links = soup2.find_all('a', 'sys_15') + archive_links_headers_2013 + archive_links_headers_2014
+for archive_link in archive_links:
+    url = 'https://www.staffordshire.gov.uk'+archive_link['href']
+    csvYr = archive_link.text.strip().split()[-1]
+    csvMth = archive_link.text.strip().split()[-2][:3]
+    csvMth = convert_mth_strings(csvMth.upper())
+    data.append([csvYr, csvMth, url])
 
 
 #### STORE DATA 1.0
